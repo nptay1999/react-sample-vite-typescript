@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import shallow from 'zustand/shallow';
+
 import { useLoaderData } from 'react-router-dom';
 import reactLogo from './assets/react.svg';
 import './assets/style/App.scss';
+import useCountStore from './hooks/useCountStore';
 
 export async function loader(): Promise<{ count: number }> {
   const count = await new Promise<number>((resolve) => {
@@ -14,7 +16,13 @@ export async function loader(): Promise<{ count: number }> {
 
 function App(): JSX.Element {
   const { count: loadCount } = useLoaderData() as { count: number };
-  const [count, setCount] = useState<number>(loadCount);
+  const { count, increase } = useCountStore(
+    (state) => ({
+      count: state.count + loadCount,
+      increase: state.increase,
+    }),
+    shallow,
+  );
 
   return (
     <div className="App">
@@ -28,7 +36,7 @@ function App(): JSX.Element {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button type="button" onClick={() => setCount((c) => c + 1)}>
+        <button type="button" onClick={increase}>
           count is {count}
         </button>
         <p>
