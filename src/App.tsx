@@ -1,9 +1,20 @@
 import { useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import reactLogo from './assets/react.svg';
 import './assets/style/App.scss';
 
+export async function loader(): Promise<{ count: number }> {
+  const count = await new Promise<number>((resolve) => {
+    setTimeout(() => {
+      resolve(1);
+    }, 1000);
+  });
+  return { count };
+}
+
 function App(): JSX.Element {
-  const [count, setCount] = useState<number>(0);
+  const { count: loadCount } = useLoaderData() as { count: number };
+  const [count, setCount] = useState<number>(loadCount);
 
   return (
     <div className="App">

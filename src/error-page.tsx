@@ -1,0 +1,23 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+import { useRouteError } from 'react-router-dom';
+
+interface IError {
+  statusText: string;
+  message: string;
+}
+
+export default function ErrorPage(): JSX.Element {
+  const error = useRouteError() as IError;
+  // eslint-disable-next-line no-console
+  console.error(error);
+
+  return (
+    <div id="error-page">
+      <h1 style={{ textAlign: 'center' }}>Oops!</h1>
+      <p>Sorry, an unexpected error has occurred.</p>
+      <p>
+        <i>{error.statusText || error.message}</i>
+      </p>
+    </div>
+  );
+}
